@@ -20,13 +20,6 @@ import kotlinx.io.asSink
 import kotlinx.io.buffered
 import kotlinx.serialization.json.*
 
-class App {
-    val greeting: String
-        get() {
-            return "Hello World!"
-        }
-}
-
 fun main() {
    runMcpServer()
 }
@@ -44,23 +37,7 @@ fun runMcpServer() {
         )
     )
 
-    // Create a transport using standard IO for server communication
-    val transport = StdioServerTransport(
-        System.`in`.asInput(),
-        System.out.asSink().buffered()
-    )
-
-    runBlocking {
-        server.connect(transport)
-        val done = Job()
-        server.onClose {
-            done.complete()
-        }
-        done.join()
-    }
-
-
-// Register a tool to fetch weather alerts by state
+    // Register a tool to fetch weather alerts by state
     server.addTool(
         name = "get_alerts",
         description = """
@@ -86,7 +63,7 @@ fun runMcpServer() {
         CallToolResult(content = alerts.map { TextContent(it) })
     }
 
-// Register a tool to fetch weather forecast by latitude and longitude
+    // Register a tool to fetch weather forecast by latitude and longitude
     server.addTool(
         name = "get_forecast",
         description = """
@@ -112,6 +89,22 @@ fun runMcpServer() {
 
         CallToolResult(content = forecast.map { TextContent(it) })
     }
+
+    // Create a transport using standard IO for server communication
+    val transport = StdioServerTransport(
+        System.`in`.asInput(),
+        System.out.asSink().buffered()
+    )
+
+    runBlocking {
+        server.connect(transport)
+        val done = Job()
+        server.onClose {
+            done.complete()
+        }
+        done.join()
+    }
+
 }
 
 
