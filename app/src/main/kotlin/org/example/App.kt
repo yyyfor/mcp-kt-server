@@ -3,8 +3,6 @@
  */
 package org.example
 
-import io.ktor.http.HttpHeaders.Server
-import io.ktor.http.content.*
 import io.ktor.utils.io.streams.*
 import io.modelcontextprotocol.kotlin.sdk.CallToolResult
 import io.modelcontextprotocol.kotlin.sdk.Implementation
